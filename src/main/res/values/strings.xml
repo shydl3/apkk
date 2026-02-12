@@ -3,7 +3,7 @@
     <string name="app_name">USB MP3 管理 (长按选择文件)</string>
     <string name="status_not_connected">未连接存储设备</string>
     <string name="status_detected_needs_auth">检测到存储设备，请授权访问</string>
-    <string name="authorize_access">授权访问</string>
+    <string name="authorize_access">点击授予访问权限</string>
     <string name="local_mp3_manage">管理本地文件</string>
     <string name="manage_usb">点击进入U盘</string>
     <string name="back_to_local">点击返回本地文件</string>
@@ -15,7 +15,7 @@
     <string name="delete">点击删除</string>
     <string name="selected_count">已选择: %1$d</string>
     <string name="selected_count_zero">已选择: 0</string>
-    <string name="confirm_delete">确认删除吗？？？</string>
+    <string name="confirm_delete">确认从U盘删除所选文件吗？？？</string>
     <string name="confirm_delete_second">请再次确认删除! ! !</string>
     <string name="type_directory">目录</string>
     <string name="type_file">文件</string>

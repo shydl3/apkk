@@ -450,7 +450,7 @@ public class LocalMp3Activity extends AppCompatActivity {
 
     private void showUsbNotConnectedDialog() {
         new AlertDialog.Builder(this)
-            .setMessage("请先连接！")
+            .setMessage("请先连接U盘！")
             .setPositiveButton(android.R.string.ok, null)
             .show();
     }
