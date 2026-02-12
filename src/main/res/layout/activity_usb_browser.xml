@@ -47,5 +47,5 @@
         android:id="@+id/btn_local_mp3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/local_mp3_manage" />
+        android:text="@string/back_to_local" />
 </LinearLayout>

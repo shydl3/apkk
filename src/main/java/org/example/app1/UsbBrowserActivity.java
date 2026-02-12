@@ -101,8 +101,7 @@ public class UsbBrowserActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> confirmExternalDelete());
         localMp3Button.setOnClickListener(v -> {
             Log.d(TAG, "Local MP3 button clicked");
-            Toast.makeText(this, "Open local MP3 manager", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, LocalMp3Activity.class));
+            finish();
         });
 
         ensureAudioPermission();
@@ -234,19 +233,26 @@ public class UsbBrowserActivity extends AppCompatActivity {
                 return;
             }
             List<DocumentFile> fileList = new ArrayList<>(Arrays.asList(files));
-            fileList.sort((a, b) -> {
-                if (a.isDirectory() != b.isDirectory()) {
-                    return a.isDirectory() ? -1 : 1;
+            List<DocumentFile> mp3Only = new ArrayList<>();
+            for (DocumentFile file : fileList) {
+                if (file == null || file.isDirectory()) {
+                    continue;
                 }
+                String name = file.getName();
+                if (name != null && name.toLowerCase(java.util.Locale.US).endsWith(".mp3")) {
+                    mp3Only.add(file);
+                }
+            }
+            mp3Only.sort((a, b) -> {
                 String nameA = a.getName() == null ? "" : a.getName();
                 String nameB = b.getName() == null ? "" : b.getName();
                 return String.CASE_INSENSITIVE_ORDER.compare(nameA, nameB);
             });
             runOnUiThread(() -> {
-                adapter.setItems(fileList);
+                adapter.setItems(mp3Only);
                 onSelectionChanged(0);
                 exitSelectionMode();
-                Log.d(TAG, "loadDirectory count=" + fileList.size());
+                Log.d(TAG, "loadDirectory count=" + mp3Only.size());
             });
         });
     }
@@ -269,14 +275,7 @@ public class UsbBrowserActivity extends AppCompatActivity {
 
     private void showConnectedUi(DocumentFile directory) {
         authorizeButton.setVisibility(View.GONE);
-        String name = directory.getName();
-        if (name == null) {
-            name = "";
-        }
-        statusText.setText(
-            name.isEmpty() ? getString(R.string.status_connected)
-                : getString(R.string.current_directory, name)
-        );
+        statusText.setText(getString(R.string.external_location));
         updateActionBar();
     }
 
@@ -470,3 +469,6 @@ public class UsbBrowserActivity extends AppCompatActivity {
         }
     }
 }
+
+
+
