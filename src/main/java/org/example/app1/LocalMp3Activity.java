@@ -37,11 +37,11 @@ import android.content.ContentResolver;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import androidx.appcompat.app.AlertDialog;
 
 public class LocalMp3Activity extends AppCompatActivity {
     private static final String TAG = "LocalMp3Activity";
     private static final int REQUEST_PERMISSION = 1001;
-    private static final String USB_TARGET_DIR = "CCDownload";
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -108,6 +108,10 @@ public class LocalMp3Activity extends AppCompatActivity {
         grantPermissionButton.setOnClickListener(v -> requestMediaPermission());
         localMp3Button.setOnClickListener(v -> {
             Log.d(TAG, "Local MP3 button clicked");
+            if (!UsbAccessUtil.hasRemovableStorage(this)) {
+                showUsbNotConnectedDialog();
+                return;
+            }
             startActivity(new Intent(this, UsbBrowserActivity.class));
         });
         moveToUsbButton.setOnClickListener(v -> moveSelectedToUsb());
@@ -337,6 +341,10 @@ public class LocalMp3Activity extends AppCompatActivity {
             return;
         }
         Uri stored = UsbAccessUtil.getPersistedUriIfValid(this);
+        if (!UsbAccessUtil.hasRemovableStorage(this)) {
+            runOnUiThread(this::showUsbNotConnectedDialog);
+            return;
+        }
         if (stored == null) {
             pickerLauncher.launch(UsbAccessUtil.createOpenDocumentTreeIntent(this));
             return;
@@ -354,19 +362,9 @@ public class LocalMp3Activity extends AppCompatActivity {
                 ).show());
                 return;
             }
-            androidx.documentfile.provider.DocumentFile targetDir =
-                getOrCreateDirectory(root, USB_TARGET_DIR);
-            if (targetDir == null) {
-                runOnUiThread(() -> Toast.makeText(
-                    this,
-                    getString(R.string.move_failed),
-                    Toast.LENGTH_SHORT
-                ).show());
-                return;
-            }
             ContentResolver resolver = getContentResolver();
             for (Mp3Item item : selected) {
-                boolean ok = copyToUsb(resolver, item, targetDir);
+                boolean ok = copyToUsb(resolver, item, root);
                 if (ok) {
                     copied++;
                 } else {
@@ -393,20 +391,6 @@ public class LocalMp3Activity extends AppCompatActivity {
                 refreshMp3List();
             });
         });
-    }
-
-    private androidx.documentfile.provider.DocumentFile getOrCreateDirectory(
-        androidx.documentfile.provider.DocumentFile root,
-        String name
-    ) {
-        if (root == null) {
-            return null;
-        }
-        androidx.documentfile.provider.DocumentFile existing = root.findFile(name);
-        if (existing != null && existing.isDirectory()) {
-            return existing;
-        }
-        return root.createDirectory(name);
     }
 
     private boolean copyToUsb(
@@ -462,5 +446,12 @@ public class LocalMp3Activity extends AppCompatActivity {
             index++;
         }
         return dir.createFile(mimeType, candidate);
+    }
+
+    private void showUsbNotConnectedDialog() {
+        new AlertDialog.Builder(this)
+            .setMessage("请先连接！")
+            .setPositiveButton(android.R.string.ok, null)
+            .show();
     }
 }
