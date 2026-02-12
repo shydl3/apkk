@@ -1,0 +1,11 @@
+Build APK from the project root:
+.\gradlew.bat assembleDebug
+
+
+install to device (USB connected):
+adb devices
+adb install -r .\build\outputs\apk\debug\project_name-debug.apk
+
+
+OR:
+.\gradlew.bat installDebug

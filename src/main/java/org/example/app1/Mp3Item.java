@@ -6,13 +6,11 @@ public class Mp3Item {
     private final String displayName;
     private final Uri contentUri;
     private final long size;
-    private boolean selected;
 
     public Mp3Item(String displayName, Uri contentUri, long size) {
         this.displayName = displayName;
         this.contentUri = contentUri;
         this.size = size;
-        this.selected = false;
     }
 
     public String getDisplayName() {
@@ -25,13 +23,5 @@ public class Mp3Item {
 
     public long getSize() {
         return size;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 }

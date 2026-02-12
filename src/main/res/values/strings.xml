@@ -1,20 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">USB MP3 管理</string>
     <string name="status_not_connected">未连接存储设备</string>
+    <string name="status_detected_needs_auth">检测到存储设备，请授权访问</string>
     <string name="authorize_access">授权访问</string>
     <string name="local_mp3_manage">本机MP3管理</string>
+    <string name="manage_usb">管理U盘</string>
+    <string name="ccdownload_title">CCDownload MP3</string>
+    <string name="permission_denied">未授予读取音频权限</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="no_mp3_in_directory">该目录下没有MP3文件</string>
     <string name="move_to_usb">移动到U盘</string>
     <string name="delete">删除</string>
     <string name="selected_count">已选择: %1$d</string>
     <string name="selected_count_zero">已选择: 0</string>
-    <string name="confirm_delete">确认删除吗</string>
+    <string name="confirm_delete">确认删除吗？</string>
+    <string name="confirm_delete_second">请再次确认删除</string>
     <string name="type_directory">目录</string>
     <string name="type_file">文件</string>
     <string name="current_directory">当前目录: %1$s</string>
     <string name="status_connected">已连接存储设备</string>
     <string name="permission_required">需要读取音频权限</string>
+    <string name="permission_hint">需要读取音频权限以显示本机MP3</string>
     <string name="select_files">请选择文件</string>
     <string name="usb_authorize_first">请先授权U盘访问</string>
     <string name="move_failed">移动失败，请检查U盘连接</string>
+    <string name="move_partial_failed">已复制但删除失败</string>
+    <string name="external_delete_failed">删除失败: %1$s</string>
 </resources>

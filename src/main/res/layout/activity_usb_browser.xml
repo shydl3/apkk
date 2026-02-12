@@ -12,6 +12,15 @@
         android:text="@string/status_not_connected"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/permissionHintText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/permission_hint"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/authorizeButton"
         android:layout_width="wrap_content"
@@ -27,7 +36,15 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/localMp3Button"
+        android:id="@+id/deleteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/delete"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_local_mp3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/local_mp3_manage" />

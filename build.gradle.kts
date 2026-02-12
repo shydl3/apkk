@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application") version "8.5.2"
+    id("com.android.application") version "8.12.0"
 }
 
 android {
@@ -35,4 +35,13 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("androidx.activity:activity:1.9.2")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+            useVersion("1.8.22")
+        }
+    }
 }

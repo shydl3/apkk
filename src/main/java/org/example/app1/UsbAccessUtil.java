@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.UriPermission;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 
@@ -93,5 +94,23 @@ public class UsbAccessUtil {
             return null;
         }
         return DocumentFile.fromTreeUri(context, uri);
+    }
+
+    public static boolean hasRemovableStorage(Context context) {
+        StorageManager storageManager =
+            (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+        if (storageManager == null) {
+            return false;
+        }
+        for (StorageVolume volume : storageManager.getStorageVolumes()) {
+            if (volume.isRemovable()) {
+                String state = volume.getState();
+                if (Environment.MEDIA_MOUNTED.equals(state)
+                    || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
