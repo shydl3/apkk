@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import android.provider.MediaStore;
@@ -42,10 +44,12 @@ import androidx.appcompat.app.AlertDialog;
 public class LocalMp3Activity extends AppCompatActivity {
     private static final String TAG = "LocalMp3Activity";
     private static final int REQUEST_PERMISSION = 1001;
+    private static final String LOCAL_TARGET_DIR = "CCDownload";
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private TextView permissionText;
+    private TextView titleText;
     private Button grantPermissionButton;
     private TextView emptyText;
     private Button localMp3Button;
@@ -64,6 +68,7 @@ public class LocalMp3Activity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipeRefresh);
         recyclerView = findViewById(R.id.mp3RecyclerView);
         permissionText = findViewById(R.id.permissionText);
+        titleText = findViewById(R.id.titleText);
         grantPermissionButton = findViewById(R.id.grantPermissionButton);
         emptyText = findViewById(R.id.emptyText);
         localMp3Button = findViewById(R.id.btn_local_mp3);
@@ -116,7 +121,27 @@ public class LocalMp3Activity extends AppCompatActivity {
         });
         moveToUsbButton.setOnClickListener(v -> moveSelectedToUsb());
 
+        try {
+            titleText.setText(getExistingLocalTargetAbsolutePath());
+        } catch (IllegalStateException e) {
+            Log.e(TAG, e.getMessage());
+            File externalStorageDir = Environment.getExternalStorageDirectory();
+            File targetDir = new File(externalStorageDir, LOCAL_TARGET_DIR);
+            titleText.setText("路径错误: " + targetDir.getAbsolutePath());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         ensureMediaPermission();
+    }
+
+    private String getExistingLocalTargetAbsolutePath() {
+        File externalStorageDir = Environment.getExternalStorageDirectory();
+        File targetDir = new File(externalStorageDir, LOCAL_TARGET_DIR);
+        if (!targetDir.exists() || !targetDir.isDirectory()) {
+            throw new IllegalStateException(
+                "目录不存在: " + targetDir.getAbsolutePath()
+            );
+        }
+        return targetDir.getAbsolutePath();
     }
 
     @Override
